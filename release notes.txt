@@ -1,0 +1,3 @@
+1.1.24 v0.1
+First commit. Added subroutines for calculating theoretical kV and kA values.
+Currently can only be ran in REPL or an IDE with console output. Implementation of GUI API currently in the works.
