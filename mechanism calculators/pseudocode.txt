@@ -1,0 +1,77 @@
+calculating kA and kV
+
+constants needed:
+number of motors used to drive mechanism
+maximum applied voltage
+maximum free speed in RPM
+stall torque at zero RPM
+    torque is linear, zero at max RPM and full at zero RPM
+ratio of mechanism
+moment of inertia of the mechanism (if rotational)
+    moment of inertia = mass * radius^2
+    these can also be used to calculate more accurately
+        I = 0.5 * m * r^2 cylinder model
+        I = 0.0833 * m * (a^2 + b^2) rectangular plate model
+    approxmiate radius of object is expressed by r in these equations
+circumference of wheel driven (if linear)
+weight of mechanism
+
+resultant calculations:
+maximum acheivable speed
+    linear speed needs circumference of wheel that is driven for transformation
+    linear speed per second = (RPM / final ratio) * conv factor / 60
+maximum acheivable acceleration
+    accleration = force in newtons / mass
+    linear force = torque (at stall in this case) / wheel radius
+calculated kV constant in units of volts per unit of velocity
+    conversion factor = wheel diameter * pi / 60
+    velocity = (free speed rpm / final ratio) * conversion factor
+    kV = volts / velocity
+        examples
+            example with units of m/s
+                conversion factor = (0.0762 * pi) / 60
+                conversion factor = 0.00398
+                velocity = (6784 / 4.71) * 0.23938
+                velocity = 5.74365m/s
+                kV = 12volts / 5.74365m/s
+                kV = 2.09059 volts/(m/s)
+            example with units of rad/s
+                conversion factor = (2 * pi) / 60
+                conversion factor = 0.10471
+                velocity = (11000 / 46.42) * 0.10471
+                kV = 12volts / 24.81279rad/s
+                kV = 0.48362 volts/(rad/s)
+calculated theoretical kA constant in units of volts per unit of accleration
+    linear force = torque / radius
+    moment of inertia = mass * radius^2
+    accleration = force / mass (linear)
+    accleration = torque / moment of inertia (angular)
+    kA = voltage / acceleration
+        examples
+        note that this is calculated off of theroetical values and thus may need tweaking
+        example with units of m/s^2 (linear)
+            no moment of inertia calculation needed here since this is linear
+            stall torque = 2.65Nm * 4.71 at zero (need to apply ratio since it multiplies torque)
+            stall torque = 12.48150Nm
+            wheel radius = 0.03814m
+            mass = 65.77kg (145lb)
+            force = (12.48150nm / 0.03814m) * 4 (multiply for 4 wheels)
+            force = 1309.01940N (294.267 lbf!!!!)
+            acceleration = 1309.01940 / 65.77kg
+            acceleration = 19.90298m/s^2 (65.29849 ft/s!!!)
+            stall torque is typically rated at full applied nom volts, so 12 volts is used here
+            kA = 12volts / 19.90298m/s^2
+            kA = 0.60292 volts/(m/s^2)
+        example with units of rad/s^2 (angular)
+            stall torque = 0.97 * 46.42 (also need to apply ratio to multiply torque)
+            stall torque = 45.07240Nm
+            mass = 2.26kg
+            radius = 0.1016m
+            moment of inertia = 0.5 * 2.26kg * 0.1016m^2
+            moment of inertia = 0.01166kg/m
+            acceleration = 45.07240Nm / 0.01166kg/m
+            accleration = 3865.55746rad/s^2
+            kA = 12volts / 3865.55746rad/s^2
+            kA = 0.0031
+            this result is ridiculously low due to low moment of inertia and extremely high torque
+
